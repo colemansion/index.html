@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COLEMANSION — Welcome</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#050608;
+  --dark:#0a0c10;
+  --card:#0f1218;
+  --border:#1e2330;
+  --gold:#f5c842;
+  --blue:#1a8cff;
+  --red:#ff3d57;
+  --white:#f0f2f7;
+  --muted:#6b7591;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Barlow',sans-serif;
+}
+
+html,body{height:100%;overflow:hidden;}
+
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--font-body);
+  font-weight:300;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+.app{
+  position:relative;z-index:1;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* PROGRESS BAR */
+.progress-wrap{
+  padding:20px 40px 0;
+  flex-shrink:0;
+}
+.progress-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:20px;
+  letter-spacing:3px;
+  color:var(--gold);
+}
+.step-counter{
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.progress-track{
+  height:2px;
+  background:var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--gold);
+  transition:width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-steps{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+}
+.progress-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--border);
+  transition:background 0.4s;
+  cursor:pointer;
+}
+.progress-dot.done{background:var(--gold);}
+.progress-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(245,200,66,0.6);}
+
+/* SCREENS */
+.screens{
+  flex:1;
+  overflow:hidden;
+  position:relative;
+}
+
+.screen{
+  position:absolute;
+  inset:0;
+  padding:40px 40px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  opacity:0;
+  transform:translateX(60px);
+  transition:opacity 0.45s ease, transform 0.45s ease;
+  pointer-events:none;
+  overflow-y:auto;
+}
+
+.screen.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+}
+
+.screen.exit{
+  opacity:0;
+  transform:translateX(-60px);
+}
+
+.screen-inner{max-width:680px;margin:0 auto;width:100%;}
+
+/* TYPOGRAPHY */
+.screen-eyebrow{
+  font-size:10px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.screen-eyebrow::before{
+  content:'';
+  width:24px;height:1px;
+  background:var(--gold);
+}
+.screen-title{
+  font-family:var(--font-display);
+  font-size:clamp(36px,6vw,72px);
+  line-height:0.95;
+  letter-spacing:2px;
+  margin-bottom:24px;
+  color:var(--white);
+}
+.screen-title .gold{color:var(--gold);}
+.screen-title .red{color:var(--red);}
+.screen-title .outline{-webkit-text-stroke:2px var(--white);color:transparent;}
+.screen-body{
+  font-size:16px;
+  line-height:1.85;
+  color:#b0b8d0;
+  font-weight:300;
+  margin-bottom:20px;
+}
+.screen-body strong{color:var(--white);font-weight:600;}
+
+/* HIGHLIGHT BLOCK */
+.highlight-block{
+  background:rgba(245,200,66,0.05);
+  border-left:3px solid var(--gold);
+  padding:20px 24px;
+  margin:24px 0;
+  font-size:15px;
+  color:#b0b8d0;
+  line-height:1.8;
+  font-weight:300;
+  font-style:italic;
+}
+
+/* LAW CARDS */
+.law-cards{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:24px 0;
+}
+.law-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:20px 24px;
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  transition:border-color 0.3s;
+}
+.law-card:hover{border-color:var(--gold);}
+.law-num{
+  font-family:var(--font-display);
+  font-size:28px;
+  color:rgba(245,200,66,0.3);
+  line-height:1;
+  flex-shrink:0;
+  width:32px;
+}
+.law-title{
+  font-weight:700;
+  font-size:14px;
+  color:var(--white);
+  margin-bottom:4px;
+  letter-spacing:0.5px;
+}
+.law-desc{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* ROADMAP */
+.roadmap{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  margin:24px 0;
+}
+.road-item{
+  display:flex;
+  gap:0;
+  align-items:stretch;
+}
+.road-line{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:40px;
+  flex-shrink:0;
+}
+.road-circle{
+  width:28px;height:28px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--muted);
+  flex-shrink:0;
+  transition:all 0.3s;
+}
+.road-circle.current{
+  border-color:var(--gold);
+  background:rgba(245,200,66,0.1);
+  color:var(--gold);
+}
+.road-circle.done{
+  border-color:var(--blue);
+  background:rgba(26,140,255,0.1);
+  color:var(--blue);
+}
+.road-connector{
+  width:2px;
+  flex:1;
+  background:var(--border);
+  margin:4px 0;
+  min-height:16px;
+}
+.road-content{
+  flex:1;
+  padding:4px 0 20px 16px;
+}
+.road-label{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.road-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:4px;
+}
+.road-desc{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* ACCESS CARDS */
+.access-grid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:24px 0;
+}
+.access-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:20px 24px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  text-decoration:none;
+  transition:border-color 0.3s, transform 0.2s;
+  cursor:pointer;
+}
+.access-card:hover{
+  border-color:var(--gold);
+  transform:translateX(4px);
+}
+.access-icon{
+  width:44px;height:44px;
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  flex-shrink:0;
+}
+.access-icon.gold{background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.2);}
+.access-icon.blue{background:rgba(26,140,255,0.1);border:1px solid rgba(26,140,255,0.2);}
+.access-icon.red{background:rgba(255,61,87,0.1);border:1px solid rgba(255,61,87,0.2);}
+.access-text{flex:1;}
+.access-title{font-weight:700;font-size:15px;color:var(--white);margin-bottom:2px;}
+.access-desc{font-size:12px;color:var(--muted);}
+.access-arrow{font-size:18px;color:var(--gold);}
+
+/* STAT ROW */
+.stat-row{
+  display:flex;
+  gap:24px;
+  margin:24px 0;
+  flex-wrap:wrap;
+}
+.stat-box{
+  flex:1;
+  min-width:100px;
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:16px 20px;
+  text-align:center;
+}
+.stat-num{
+  font-family:var(--font-display);
+  font-size:36px;
+  color:var(--gold);
+  letter-spacing:2px;
+  line-height:1;
+}
+.stat-label{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* NAVIGATION */
+.nav-wrap{
+  padding:20px 40px 24px;
+  flex-shrink:0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid var(--border);
+}
+.btn-back{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:var(--font-body);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:12px 24px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-back:hover{border-color:var(--muted);color:var(--white);}
+.btn-back:disabled{opacity:0.2;cursor:default;}
+.btn-next{
+  background:var(--gold);
+  color:var(--black);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:14px 36px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.25s;
+  position:relative;
+  overflow:hidden;
+}
+.btn-next::after{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(255,255,255,0.15);
+  transform:translateX(-100%);
+  transition:transform 0.3s;
+}
+.btn-next:hover::after{transform:translateX(0);}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(245,200,66,0.4);}
+.btn-finish{
+  background:var(--blue);
+  color:var(--white);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:14px 36px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.25s;
+}
+.btn-finish:hover{background:#3d9eff;transform:translateY(-1px);}
+
+/* PULSE DOT */
+.pulse{
+  width:8px;height:8px;
+  background:var(--gold);
+  border-radius:50%;
+  display:inline-block;
+  animation:pulse 2s ease infinite;
+  margin-right:8px;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.screen.active .screen-eyebrow{animation:fadeUp 0.5s 0.1s ease both;}
+.screen.active .screen-title{animation:fadeUp 0.5s 0.2s ease both;}
+.screen.active .screen-body{animation:fadeUp 0.5s 0.3s ease both;}
+.screen.active .highlight-block,
+.screen.active .law-cards,
+.screen.active .roadmap,
+.screen.active .access-grid,
+.screen.active .stat-row{animation:fadeUp 0.5s 0.35s ease both;}
+
+@media(max-width:600px){
+  .progress-wrap{padding:16px 20px 0;}
+  .screen{padding:24px 20px 16px;}
+  .nav-wrap{padding:16px 20px 20px;}
+  .screen-title{font-size:36px;}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-header">
+      <div class="logo">COLEMANSION</div>
+      <div class="step-counter" id="stepCounter">Step 1 of 5</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:20%;"></div>
+    </div>
+    <div class="progress-steps">
+      <div class="progress-dot active" id="dot1" onclick="goTo(1)"></div>
+      <div class="progress-dot" id="dot2" onclick="goTo(2)"></div>
+      <div class="progress-dot" id="dot3" onclick="goTo(3)"></div>
+      <div class="progress-dot" id="dot4" onclick="goTo(4)"></div>
+      <div class="progress-dot" id="dot5" onclick="goTo(5)"></div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="screens">
+
+    <!-- SCREEN 1: WELCOME -->
+    <div class="screen active" id="screen1">
+      <div class="screen-inner">
+        <div class="screen-eyebrow"><span class="pulse"></span>You are in</div>
+        <h1 class="screen-title">
+          Welcome To<br>
+          <span class="gold">Colemansion.</span><br>
+          <span class="outline">This Changes</span><br>
+          Everything.
+        </h1>
+        <p class="screen-body">
+          You just made a decision most traders never make. Not to try harder with the wrong tools. To change the foundation entirely.
+        </p>
+        <div class="highlight-block">
+          "I spent 3.5 years and 22 straight losses doing everything I was taught. The moment I stopped following the gurus and started studying what the market actually does — everything changed. That shift is what you just bought into. Welcome."<br><br>
+          <strong style="color:var(--gold);font-style:normal;">Orrette Coleman, Founder</strong>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">22</div>
+            <div class="stat-label">Losses Before The Shift</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Steps In The System</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">1</div>
+            <div class="stat-label">Law That Runs All Markets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: WHAT YOU BOUGHT INTO -->
+    <div class="screen" id="screen2">
+      <div class="screen-inner">
+        <div class="screen-eyebrow">The Foundation</div>
+        <h1 class="screen-title">
+          This Is Not<br>
+          Another <span class="red">Course.</span><br>
+          This Is The<br>
+          <span class="gold">Real Law.</span>
+        </h1>
+        <p class="screen-body">
+          Every strategy you were taught before — support and resistance, fibs, indicators — was built around patterns retail traders can see. <strong>Institutions built their edge around running those exact patterns.</strong>
+        </p>
+        <p class="screen-body">
+          The Secret Sauce is built on the other side of that equation. Not what retail traders see. What institutions need. And what they need, they repeat. Every single session.
+        </p>
+        <div class="highlight-block">
+          The market does not respect your levels. It was engineered to move through them. Once you see why — you cannot unsee it. And that is the last time a level gets run through without you understanding exactly why it happened.
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: THE LAW -->
+    <div class="screen" id="screen3">
+      <div class="screen-inner">
+        <div class="screen-eyebrow">The Quick Win</div>
+        <h1 class="screen-title">
+          One Concept.<br>
+          <span class="gold">Before You</span><br>
+          Watch Anything.
+        </h1>
+        <p class="screen-body">
+          Before you open the Masterclass, understand this one thing. It will make everything inside click faster.
+        </p>
+        <div class="law-cards">
+          <div class="law-card">
+            <div class="law-num">01</div>
+            <div>
+              <div class="law-title">Institutions need counterparties</div>
+              <div class="law-desc">They cannot fill massive positions without someone on the other side of the trade. Retail traders at visible levels provide exactly that. Your support level is their entry. They need you there.</div>
+            </div>
+          </div>
+          <div class="law-card">
+            <div class="law-num">02</div>
+            <div>
+              <div class="law-title">They leave footprints when they position</div>
+              <div class="law-desc">Every time an institution builds a position, it leaves a mark on the chart. Not a textbook pattern. A specific zone. That zone is the Secret Sauce. It is where they return because they have to.</div>
+            </div>
+          </div>
+          <div class="law-card">
+            <div class="law-num">03</div>
+            <div>
+              <div class="law-title">The law repeats because the need repeats</div>
+              <div class="law-desc">Institutions do not change how they operate. The need to manufacture counterparties is permanent. Which means the law that governs how price moves is permanent. You are not learning a strategy. You are learning a law.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: ROADMAP -->
+    <div class="screen" id="screen4">
+      <div class="screen-inner">
+        <div class="screen-eyebrow">Your Path</div>
+        <h1 class="screen-title">
+          Where You Are.<br>
+          <span class="gold">Where You</span><br>
+          Are Going.
+        </h1>
+        <p class="screen-body">
+          Simple sequence. No overwhelm. Follow this order and the system builds correctly from the ground up.
+        </p>
+        <div class="roadmap">
+          <div class="road-item">
+            <div class="road-line">
+              <div class="road-circle current">1</div>
+              <div class="road-connector"></div>
+            </div>
+            <div class="road-content">
+              <div class="road-label">You Are Here</div>
+              <div class="road-title">Onboarding</div>
+              <div class="road-desc">Understanding the foundation before you watch anything. This is the most important step most people skip.</div>
+            </div>
+          </div>
+          <div class="road-item">
+            <div class="road-line">
+              <div class="road-circle">2</div>
+              <div class="road-connector"></div>
+            </div>
+            <div class="road-content">
+              <div class="road-label">Next</div>
+              <div class="road-title">Watch The Masterclass</div>
+              <div class="road-desc">The full Secret Sauce system. Setup. Confirmation. Execution. Watch it once all the way through before you touch a chart.</div>
+            </div>
+          </div>
+          <div class="road-item">
+            <div class="road-line">
+              <div class="road-circle">3</div>
+              <div class="road-connector"></div>
+            </div>
+            <div class="road-content">
+              <div class="road-label">Then</div>
+              <div class="road-title">Mark Zones On Historical Charts</div>
+              <div class="road-desc">Before you trade live, go back and find the Secret Sauce zones on past price action. See where they held. See where price returned. Build the pattern recognition first.</div>
+            </div>
+          </div>
+          <div class="road-item">
+            <div class="road-line">
+              <div class="road-circle">4</div>
+              <div class="road-connector"></div>
+            </div>
+            <div class="road-content">
+              <div class="road-label">Then</div>
+              <div class="road-title">Execute On Demo</div>
+              <div class="road-desc">Run the full Setup. Confirmation. Execution. sequence on a demo account until the process is automatic. Not until you feel confident. Until the process is mechanical.</div>
+            </div>
+          </div>
+          <div class="road-item">
+            <div class="road-line">
+              <div class="road-circle">5</div>
+            </div>
+            <div class="road-content">
+              <div class="road-label">Goal</div>
+              <div class="road-title">Live Account and Funded</div>
+              <div class="road-desc">The system is prop firm ready. When the process is clean on demo, bring it live. The law does not change between demo and live. Your job is to execute it cleanly.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: ACCESS -->
+    <div class="screen" id="screen5">
+      <div class="screen-inner">
+        <div class="screen-eyebrow">You Are Inside</div>
+        <h1 class="screen-title">
+          Everything<br>
+          You Need<br>
+          Is <span class="gold">Right Here.</span>
+        </h1>
+        <p class="screen-body">
+          Start with the Masterclass. Come back to the community when you have questions. Show up to the livestreams when they are live. The system is simple. Run it clean.
+        </p>
+        <div class="access-grid">
+          <div class="access-card" onclick="window.open('https://whop.com/c/the-secret-sauce-d7/secret-sauce-masterclass','_blank')">
+            <div class="access-icon gold">🎓</div>
+            <div class="access-text">
+              <div class="access-title">Secret Sauce Masterclass</div>
+              <div class="access-desc">Start here. The full system from the ground up. Watch once all the way through.</div>
+            </div>
+            <div class="access-arrow">→</div>
+          </div>
+          <div class="access-card" onclick="window.open('https://whop.com/c/the-secret-sauce-d7/','_blank')">
+            <div class="access-icon blue">💬</div>
+            <div class="access-text">
+              <div class="access-title">Community Chat</div>
+              <div class="access-desc">Traders running the same law. Ask questions. Share setups. You are not alone in this.</div>
+            </div>
+            <div class="access-arrow">→</div>
+          </div>
+          <div class="access-card" onclick="window.open('https://whop.com/c/the-secret-sauce-d7/','_blank')">
+            <div class="access-icon red">📡</div>
+            <div class="access-text">
+              <div class="access-title">Live Streams</div>
+              <div class="access-desc">Real time chart analysis. See the law applied live. Check the schedule and show up.</div>
+            </div>
+            <div class="access-arrow">→</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:8px;font-style:italic;">The law is permanent. Your job is to execute it cleanly. Welcome to Colemansion.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav-wrap">
+    <button class="btn-back" id="btnBack" onclick="prevScreen()" disabled>Back</button>
+    <button class="btn-next" id="btnNext" onclick="nextScreen()">Continue</button>
+  </div>
+
+</div>
+
+<script>
+let current = 1;
+const total = 5;
+
+function updateUI() {
+  // Progress fill
+  document.getElementById('progressFill').style.width = (current / total * 100) + '%';
+  document.getElementById('stepCounter').textContent = 'Step ' + current + ' of ' + total;
+
+  // Dots
+  for (let i = 1; i <= total; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'progress-dot';
+    if (i < current) dot.classList.add('done');
+    else if (i === current) dot.classList.add('active');
+  }
+
+  // Back button
+  document.getElementById('btnBack').disabled = current === 1;
+
+  // Next button
+  const btnNext = document.getElementById('btnNext');
+  if (current === total) {
+    btnNext.textContent = 'Enter Colemansion';
+    btnNext.className = 'btn-finish';
+    btnNext.onclick = () => window.open('https://whop.com/c/the-secret-sauce-d7/', '_blank');
+  } else {
+    btnNext.textContent = 'Continue';
+    btnNext.className = 'btn-next';
+    btnNext.onclick = nextScreen;
+  }
+}
+
+function goTo(n) {
+  if (n === current) return;
+  const prev = document.getElementById('screen' + current);
+  prev.classList.remove('active');
+  prev.classList.add('exit');
+  setTimeout(() => prev.classList.remove('exit'), 450);
+
+  current = n;
+  const next = document.getElementById('screen' + current);
+  next.classList.add('active');
+  updateUI();
+}
+
+function nextScreen() {
+  if (current >= total) return;
+  goTo(current + 1);
+}
+
+function prevScreen() {
+  if (current <= 1) return;
+  goTo(current - 1);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'Enter') nextScreen();
+  if (e.key === 'ArrowLeft') prevScreen();
+});
+
+updateUI();
+</script>
+</body>
+</html>
